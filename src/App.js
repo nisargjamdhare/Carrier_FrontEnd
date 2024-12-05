@@ -62,7 +62,7 @@ function App() {
         <div className="LetsStarted">
           <button
             className="start-button"
-            onClick={handleStartTestClick} // Trigger the StartTest popup on "Let's get started"
+            onClick={handleRegisterClick}  // Trigger the StartTest popup on "Let's get started"
           >
             Let’s Get Started
           </button>
