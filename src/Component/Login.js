@@ -4,34 +4,35 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate for page r
 
 const Login = () => {
   const [email, setEmail] = useState("");
+  const [showLoginModal, setShowLoginModal] = useState(false); 
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // State for handling errors
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [isLoginPopupOpen, setIsLoginPopupOpen] = useState(true); // State to control login popup visibility
-  const navigate = useNavigate(); // Create a navigate function for redirection
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/User/login", {
+      const response = await axios.post("https://carrier-api-latest.onrender.com/User/login", {
         email,
         password,
       });
-
+  
       // Check if the response status is 200 (indicating success)
       if (response.status === 200) {
-        // Handle success: show alert and open modal
-        alert("Login successful!");
-
-        // Open the modal after successful login
-        setIsModalOpen(true);
-        setIsLoginPopupOpen(false); // Close the login popup/modal
+        // Close the login modal
+        setShowLoginModal(false);
+  
+        // Redirect to StartTest component in a new tab
+        const newTabUrl = "/startTest"; // Adjust the path to your route
+        window.open(newTabUrl, "_blank");
       }
     } catch (err) {
       // Handle error (e.g., invalid credentials)
       setError(err.response?.data?.message || "Login failed! Please try again.");
     }
   };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false); // Close the modal

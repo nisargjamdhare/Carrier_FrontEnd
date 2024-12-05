@@ -1,33 +1,38 @@
-import React, { useState } from 'react';
-import './App.css';
-import backgroundImage from './Images/career.jpg'; // Your background image
-import { Route, Routes } from 'react-router-dom'; // Importing Route components for routing
-import Login from './Component/Login'; // Login component
-import Register from './Component/Register'; // Register component
-import StartTest from "./Component/StartTest";
+import React, { useState } from "react";
+import "./App.css";
+import backgroundImage from "./Images/career.jpg"; // Your background image
+import { Route, Routes } from "react-router-dom"; // Importing Route components for routing
+import Login from "./Component/Login"; // Login component
+import Register from "./Component/Register"; // Register component
+import StartTest from "./Component/StartTest"; // StartTest component
 
 function App() {
   const [showLogin, setShowLogin] = useState(false); // State for login modal visibility
   const [showRegister, setShowRegister] = useState(false); // State for register modal visibility
+  const [showStartTest, setShowStartTest] = useState(false); // State for StartTest modal visibility
+
+  // Function to handle closing all modals and popups
+  const handleCloseModal = () => {
+    setShowLogin(false); // Close login modal
+    setShowRegister(false); // Close register modal
+    setShowStartTest(false); // Close StartTest popup
+  };
 
   // Handle showing the login modal
   const handleLoginClick = () => {
     setShowRegister(false);
-    setShowLogin(true);
-     // Ensure the register modal is closed when login opens
+    setShowLogin(true); // Open login modal
   };
 
   // Handle showing the register modal
   const handleRegisterClick = () => {
-    setShowLogin(false);
+    setShowLogin(false); // Close the login modal if it's open
     setShowRegister(true); // Open register modal
-     // Close the login modal if it's open
   };
 
-  // Close the modals
-  const handleCloseModal = () => {
-    setShowLogin(false); // Close login modal
-    setShowRegister(false); // Close register modal
+  // Handle showing the StartTest popup
+  const handleStartTestClick = () => {
+    setShowStartTest(true); // Show the StartTest modal
   };
 
   return (
@@ -35,14 +40,18 @@ function App() {
       className="App"
       style={{
         backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       <div className="auth-buttons">
-        <button className="auth-button" onClick={handleLoginClick}>Login</button>
-        <button className="auth-button" onClick={handleRegisterClick}>Register</button>
+        <button className="auth-button" onClick={handleLoginClick}>
+          Login
+        </button>
+        <button className="auth-button" onClick={handleRegisterClick}>
+          Register
+        </button>
       </div>
 
       <div className="App-content">
@@ -53,7 +62,7 @@ function App() {
         <div className="LetsStarted">
           <button
             className="start-button"
-            onClick={handleRegisterClick} // Trigger the register modal on "Let's get started"
+            onClick={handleStartTestClick} // Trigger the StartTest popup on "Let's get started"
           >
             Let’s Get Started
           </button>
@@ -78,10 +87,13 @@ function App() {
             <span className="close" onClick={handleCloseModal}>
               &times;
             </span>
-            <Register />
+            <Register handleLoginClicks={handleLoginClick} />
           </div>
         </div>
       )}
+
+      {/* Conditionally render the StartTest popup */}
+      {showStartTest && <StartTest onClose={handleCloseModal} />}
 
       {/* Routes (optional if you still want route support) */}
       <Routes>

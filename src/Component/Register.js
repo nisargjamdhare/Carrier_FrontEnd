@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Login from "./Login"; // Import the Login component
 
-const Register = () => {
+const Register = (props) => {
   const [showLoginModal, setShowLoginModal] = useState(false); // State for login modal visibility
   const [showRegisterModal, setShowRegisterModal] = useState(true); // State for register modal visibility
   const [name, setName] = useState(""); // State for name
@@ -22,23 +22,18 @@ const Register = () => {
 
     try {
       // Call the registration API
-      const response = await axios.post("http://localhost:4000/User/register", {
+      const response = await axios.post("https://carrier-api-latest.onrender.com/User/register", {
         name, // Include name in the request
         email,
         password,
       });
 
       if (response.status === 200) {
-        // Handle success response
         const { message, user } = response.data;
         setMessage(message); // Set success message
         console.log("User Details:", user);
-
-        // Show success alert
-        alert("Registration Successful!");
-
         // Once the alert is closed, show the login modal
-        setShowLoginModal(true);
+        props.handleLoginClicks(true);
         setShowRegisterModal(false); // Hide register modal
       }
     } catch (error) {
@@ -162,7 +157,7 @@ const Register = () => {
           <p style={{ marginTop: "15px", textAlign: "center" }}>
             Already have an account?{" "}
             <span
-              onClick={handleLoginClick}
+              onClick={props.handleLoginClicks}
               style={{
                 color: "#4CAF50",
                 cursor: "pointer",
@@ -176,17 +171,6 @@ const Register = () => {
         </>
       )}
 
-      {/* Conditionally render the Login modal */}
-      {showLoginModal && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={handleCloseModal}>
-              &times;
-            </span>
-            <Login /> {/* Render the Login component */}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
